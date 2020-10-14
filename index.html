@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue3</title>
+</head>
+<body>
+<div id="app"></div>
+<script src="./dist/umd/vue.js"></script>
+<script>
+	let { render, effect, reactive } = Vue;
+	const app = document.querySelector('#app');
+	// state
+	const state = reactive({
+		count: 0,
+		name: 'hello'
+	})
+	// 自定义组件
+	const MyComponent = {
+		setup (props, context) {
+			// 如果没有返回函数，会用 template => render
+			// 再把 render 函数挂载到 setup 函数返回结果中
+			return () => {  // render 函数
+				return {
+					tag: 'div',
+					props: { style: { color: 'pink' } },
+					children: [
+						{
+							tag: 'p',
+							props: null,
+							children: '我是一个自定义组件，name值：' + state.name
+						},
+						{
+							tag: 'button',
+							props: {
+								onClick: () => {
+									state.name = 'world';
+								}
+							},
+							children: '更新name'
+						}
+					]
+				}
+			}
+		}
+	}
+
+	effect(() => {
+		const vnode = {
+			tag: 'div',
+			props: {
+				style: { fontSize: '17px' }
+			},
+			children: [
+				{
+					tag: 'p',
+					props: { style: { color: 'blue' } },
+					children: 'vue@3 计数器'
+				}, {
+					tag: 'p',
+					props: { style: { color: 'red' } },
+					children: '当前值 ' + state.count
+				}, {
+					tag: 'button',
+					props: {
+						style: {
+							marginRight: '10px'
+						},
+						onClick: () => {
+							state.count++;
+						}
+					},
+					children: 'increment'
+				}, {
+					tag: 'button',
+					props: {
+						onClick: () => {
+							state.count--;
+						}
+					},
+					children: 'minus'
+				}, {
+					tag: MyComponent,   // 当前组件
+					props: null,    // 组件属性
+					children: '' // 插槽
+				}
+			]
+		}
+		// render(vnode, app);
+
+		// diff props 测试
+		// const oldVNode = {
+		// 	tag: 'div',
+		// 	props: {
+		// 		style: { color: 'red' }
+		// 	},
+		// 	children: 'hello world'
+		// }
+		// render(oldVNode, app)
+		//
+		// setTimeout(() => {
+		// 	const newVNode = {
+		// 		tag: 'div',
+		// 		props: {
+		// 			style: { color: 'orange' }
+		// 		},
+		// 		children: 'hello world'
+		// 	}
+		// 	render(newVNode, app)
+		// }, 2000)
+
+		// diff children
+		const oldVNode = {
+			tag: 'ul',
+			props: null,
+			children: [
+				{
+					tag: 'li',
+					props: { style: { color: 'red' }, key: 'A' },
+					children: 'A'
+				},
+				{
+					tag: 'li',
+					props: { style: { color: 'orange' }, key: 'B' },
+					children: 'B'
+				},
+			]
+		}
+
+		render(oldVNode, app)
+
+		setTimeout(() => {
+			const newVNode = {
+				tag: 'ul',
+				props: null,
+				children: [
+					{
+						tag: 'li',
+						props: { style: { color: 'red' }, key: 'A' },
+						children: 'A'
+					},
+					{
+						tag: 'li',
+						props: { style: { color: 'orange' }, key: 'B' },
+						children: 'B'
+					},
+					{
+						tag: 'li',
+						props: { style: { color: 'blue' }, key: 'C' },
+						children: 'C'
+					},
+					{
+						tag: 'li',
+						props: { style: { color: 'green' }, key: 'D' },
+						children: 'D'
+					}
+				]
+			}
+			render(newVNode, app)
+		}, 1500)
+	})
+</script>
+</body>
+</html>
