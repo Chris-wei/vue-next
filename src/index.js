@@ -131,7 +131,7 @@ function patchKeyChildren (c1, c2, container) {
 		let currentEle = c2[i];
 		const anchor = (i + 1 <= e2) ? c2[i + 1].el : null;
 		// 新的节点比老得多
-		if ( newIndexToOldIndexMap[i] === -1 ) { // 新元素，需要插入到列表中
+		if ( newIndexToOldIndexMap[i] === -1 ) { // 新元素，没有patch过，需要插入到列表中
 			patch(null, currentEle, container, anchor);	// 插入到 anchor 前面
 		} else {
 			// 获取最长递增子序列，来确定不用移动的元素，直接跳过即可

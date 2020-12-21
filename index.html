@@ -16,31 +16,31 @@
 	// state
 	const state = reactive({
 		count: 0,
-		name: 'hello'
+		num: 0
 	})
 	// 自定义组件
 	const MyComponent = {
-		setup (props, context) {
+		setup () {
 			// 如果没有返回函数，会用 template => render
 			// 再把 render 函数挂载到 setup 函数返回结果中
 			return () => {  // render 函数
 				return {
 					tag: 'div',
-					props: { style: { color: 'pink' } },
+					props: { style: { color: 'blue' } },
 					children: [
 						{
 							tag: 'p',
 							props: null,
-							children: '我是一个自定义组件，name值：' + state.name
+							children: '我是一个自定义组件，num值：' + state.num
 						},
 						{
 							tag: 'button',
 							props: {
 								onClick: () => {
-									state.name = 'world';
+									state.num ++;
 								}
 							},
-							children: '更新name'
+							children: '更新num'
 						}
 					]
 				}
@@ -58,7 +58,7 @@
 				{
 					tag: 'p',
 					props: { style: { color: 'blue' } },
-					children: 'vue@3 计数器'
+					children: '计数器'
 				}, {
 					tag: 'p',
 					props: { style: { color: 'red' } },
@@ -127,6 +127,11 @@
 					props: { style: { color: 'orange' }, key: 'B' },
 					children: 'B'
 				},
+                {
+					tag: 'li',
+					props: { style: { color: 'yellow' }, key: 'E' },
+					children: 'E'
+                }
 			]
 		}
 
@@ -144,7 +149,7 @@
 					},
 					{
 						tag: 'li',
-						props: { style: { color: 'orange' }, key: 'B' },
+						props: { style: { color: 'pink' }, key: 'B' },
 						children: 'B'
 					},
 					{
